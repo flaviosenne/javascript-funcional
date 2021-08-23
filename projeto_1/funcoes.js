@@ -32,19 +32,23 @@ function readFiles(paths){
     return Promise.all(paths.map(path => readFile(path)))
 }
 
-function elementsEndWith(array, standardText){
-    return array.filter(element => element.endsWith(standardText))
+function elementsEndWith(standardText,){
+    return function(array){
+        return array.filter(element => element.endsWith(standardText))
+    }
 }
 
-function removeIfEmpty(array){
+function removeElementsIfEmpty(array){
     return array.filter(element => element.trim())
 }
 
-function removeIfInclude(array, standardText){
-    return array.filter(element => !element.includes(standardText))
+function removeElementsIfInclude(standardText){
+    return function(array) {
+        return array.filter(element => !element.includes(standardText))
+    }
 }   
 
-function removeIfOnlyNumber(array){
+function removeElementsIfOnlyNumber(array){
     return array.filter(element => {
         const num = parseInt(element.trim())
         return num !== num
@@ -56,7 +60,7 @@ module.exports = {
     elementsEndWith,
     readFile, 
     readFiles, 
-    removeIfEmpty,
-    removeIfInclude,
-    removeIfOnlyNumber
+    removeElementsIfEmpty,
+    removeElementsIfInclude,
+    removeElementsIfOnlyNumber
 }
