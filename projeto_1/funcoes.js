@@ -5,9 +5,8 @@ function readDir(path){
     return new Promise((resolve, reject)=> {
 
         try{
-            const files = fs.readdirSync(path)
-            const filesFull = files.map(file => join(path, file))
-            resolve(filesFull)
+            const files = fs.readdirSync(path).map(file => join(path, file))
+            resolve(files)
         }catch(e){
             reject(e)
         }
@@ -18,9 +17,7 @@ function readDir(path){
 function readFile(path){
     return new Promise((resolve, reject) =>{
         try{
-            const content = fs.readFileSync(path, { encoding: 'utf-8'})
-
-            resolve(content.toString())
+            resolve(fs.readFileSync(path, { encoding: 'utf-8'}).toString())
         }catch(e){
             reject(e)
         }
@@ -92,7 +89,7 @@ function sortByAtributteNumber(atributte, order='asc'){
     return function(array){
         const desc = (object1, object2) => object2[atributte] - object1[atributte]
         const asc = (object1, object2) => object1[atributte] - object2[atributte]
-        return array.sort(order === 'asc'? asc: desc)
+        return [...array].sort(order === 'asc'? asc: desc)
     }
 }
 module.exports = { 
