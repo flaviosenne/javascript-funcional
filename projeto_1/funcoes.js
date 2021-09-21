@@ -1,6 +1,18 @@
 const fs = require('fs')
 const { join }= require('path')
 
+function composition(...fns){
+    return function(valor){
+        return fns.reduce(async (acc, fn) => {
+            if(Promise.resolve(acc) === acc){
+                return fn(await acc)
+            }else{
+                return fn(acc)
+            }
+        }, valor)
+    }
+}
+
 function readDir(path){
     return new Promise((resolve, reject)=> {
 
@@ -93,6 +105,7 @@ function sortByAtributteNumber(atributte, order='asc'){
     }
 }
 module.exports = { 
+    composition,
     readDir, 
     elementsEndWith,
     readFile, 
