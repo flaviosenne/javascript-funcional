@@ -23,6 +23,9 @@ function TipoSeguro(valor){
                 const novoValor = fn(this.valor)
                 return TipoSeguro(novoValor)
             }
+        },
+        flatMap(fn){
+            return this.map(fn).valor
         }
     }
 }
