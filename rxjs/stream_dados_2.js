@@ -1,10 +1,17 @@
-function gerarNumeros(fn){
+const numeros = [1,2,3,4,5,6,7,8,9,10,11,12]
+
+function gerarElementos(array){
     return {
-        iniciar(fn, intervalo = 1000){
-            let num = 0
+        iniciar(fn){
+            let indice = 0
             const i = setInterval(()=> {
-                fn(num++)
-            }, intervalo)
+                if(indice >= array.length){
+                    clearInterval(i)
+                }else{
+                    fn(array[indice])
+                    indice++
+                }
+            }, 1000)
 
             return {
                 parar(){
@@ -15,27 +22,20 @@ function gerarNumeros(fn){
     }
 }
 
-const temp1 = gerarNumeros()
-const exec11 = temp1.iniciar(numero => {
-    console.log('#1.1: '+(numero * 2))
+const temp1 = gerarElementos(numeros)
+
+const exec1 = temp1.iniciar(num => {
+    console.log(Math.pow(2, num))
 })
 
-const exec12 = temp1.iniciar(numero => {
-    console.log('#1.2: '+(numero * 2))
-}, 500)
+setTimeout(()=> {
+    exec1.parar()
+}, 4000)
 
 
+gerarElementos([
+    ['Ana', 'Bia', 'Carlos'],
+    ['Daniel', 'Bruno', 'Julia'],
+    [1,2,3,4,5]
 
-const temp2 = gerarNumeros()
-const exec2 =temp2.iniciar(a => {
-    console.log('#2: '+(a + 100))
-}, 2000)
-
-setTimeout(() => {
-    exec11.parar()
-    exec2.parar()
-}, 10000)
-
-setTimeout(() => {
-    exec12.parar()
-}, 12000)
+]).iniciar(console.log)
