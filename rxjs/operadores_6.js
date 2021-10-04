@@ -1,21 +1,25 @@
 const { from , Observable} = require('rxjs')
 
-function createPipeableOperator(nextFn){
+function createPipeableOperator(nextGenerator){
     return function(source){
         return Observable.create(subscribe => {
              source.subscribe({
-                 next(v){
-                    nextFn(subscribe, v)
-                 }
+                next: nextGenerator(subscribe)
              })
         })
     }
 } 
 
 function first(){
-    return createPipeableOperator((subscribe, v)=> {
-        subscribe.next(v)
-        subscribe.complete()
+    // return createPipeableOperator((subscribe, v)=> {
+    //     subscribe.next(v)
+    //     subscribe.complete()
+    // })
+    return createPipeableOperator(function(subscribe){
+        return function(v){
+            subscribe.next(v)
+            subscribe.complete()
+        }
     })
 }
 
