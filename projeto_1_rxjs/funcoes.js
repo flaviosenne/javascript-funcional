@@ -134,18 +134,7 @@ function groupElements(){
     }))  
 }
 
-function joinElements (array){
-    return array.join(' ')
-}
 
-
-function sortByAtributteNumber(atributte, order='asc'){
-    return function(array){
-        const desc = (object1, object2) => object2[atributte] - object1[atributte]
-        const asc = (object1, object2) => object1[atributte] - object2[atributte]
-        return [...array].sort(order === 'asc'? asc: desc)
-    }
-}
 module.exports = { 
     readDir, 
     elementsEndWith,
@@ -154,7 +143,5 @@ module.exports = {
     removeElementsIfEmpty,
     removeElementsIfBeginWithNumber,
     removeSymbols,
-    groupElements,
-    joinElements,
-    sortByAtributteNumber
+    groupElements
 }
