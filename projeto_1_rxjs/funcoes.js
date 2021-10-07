@@ -116,16 +116,27 @@ function joinElements (array){
 }
 
 
-function groupWords(words){
-    return Object.values(words.reduce((group, word) => {
-        const element = word.toLowerCase()
-        const qnt = group[element] ? group[element].quantidade + 1 : 1 
-        group[element] = {
-            elemento: element, 
-            quantidade: qnt  
+function groupElements(){
+    return createPipeableOperator(subscriber =>({
+        next(words){
+            try{
+                const group = Object.values(
+                    words.reduce((group, word) => {
+                        const element = word.toLowerCase()
+                        const qnt = group[element] ? group[element].quantidade + 1 : 1 
+                        group[element] = {
+                            elemento: element, 
+                            quantidade: qnt  
+                        }
+                        return group
+                    }, {}))
+
+                    subscriber.next(group)
+            }catch(e){
+                subscriber.error(e)
+            }
         }
-        return group
-    }, {}))
+    }))  
 }
 
 function sortByAtributteNumber(atributte, order='asc'){
@@ -143,7 +154,7 @@ module.exports = {
     removeElementsIfEmpty,
     removeElementsIfBeginWithNumber,
     removeSymbols,
+    groupElements,
     joinElements,
-    groupWords,
     sortByAtributteNumber
 }

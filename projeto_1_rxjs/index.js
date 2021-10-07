@@ -1,6 +1,7 @@
 const fn = require('./funcoes')
 const { join }= require('path')
 const fs = require('fs')
+const { toArray } = require('rxjs')
 
 const pathFiles = join(__dirname,'..', 'dados','legendas')
 
@@ -21,6 +22,8 @@ fn.readDir(pathFiles)
     fn.splitTextBy(' '),
     fn.removeElementsIfEmpty(),
     fn.removeElementsIfBeginWithNumber(),
+    toArray(),
+    fn.groupElements()
 
 )
 .subscribe(console.log)
