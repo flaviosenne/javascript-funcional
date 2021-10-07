@@ -80,27 +80,35 @@ function removeElementsIfEmpty(){
     }))
 }
 
-function removeElementsIfInclude(standardText){
-    return function(array) {
-        return array.filter(element => !element.includes(standardText))
-    }
-}   
-
-function removeElementsIfOnlyNumber(array){
-    return array.filter(element => {
-        const num = parseInt(element.trim())
-        return num !== num
-    })   
+function removeElementsIfBeginWithNumber(array){
+    return createPipeableOperator(subscriber =>({
+        next(text){
+            try{
+                const num = parseInt(text.trim())
+                if(num !== num){ // quando for NaN
+                    subscriber.next(text)
+                }
+            }catch(e){
+                subscriber.error(e)
+            }
+        }
+    }))      
 }
 
 function removeSymbols(symbols){
-    return function (array){
-        return array.map(element => {
-            return symbols.reduce((acc, symbol)=> {
-                return acc.split(symbol).join('')
-            }, element)
-        })
-    }
+    return createPipeableOperator(subscriber =>({
+        next(text){
+            try{
+                const textWithoutSymbols = symbols.reduce((acc, symbol)=> {
+                    return acc.split(symbol).join('')
+                }, text)
+
+                subscriber.next(textWithoutSymbols)
+            }catch(e){
+                subscriber.error(e)
+            }
+        }
+    }))     
 }
 
 function joinElements (array){
@@ -131,12 +139,11 @@ module.exports = {
     readDir, 
     elementsEndWith,
     readFile, 
+    splitTextBy,
     removeElementsIfEmpty,
-    removeElementsIfInclude,
-    removeElementsIfOnlyNumber,
+    removeElementsIfBeginWithNumber,
     removeSymbols,
     joinElements,
-    splitTextBy,
     groupWords,
     sortByAtributteNumber
 }

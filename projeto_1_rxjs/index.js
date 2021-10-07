@@ -7,7 +7,7 @@ const pathFiles = join(__dirname,'..', 'dados','legendas')
 const symbols = [ 
     '.', '?', '-', ',', '"', '♪',
     '_', '<i>','</i>', '\r','[', ']',
-    '(', ')'
+    '(', ')', '!'
 ]
 
 fn.readDir(pathFiles)
@@ -16,5 +16,11 @@ fn.readDir(pathFiles)
     fn.readFile(),
     fn.splitTextBy('\n'),
     fn.removeElementsIfEmpty(),
+    fn.removeElementsIfBeginWithNumber(),
+    fn.removeSymbols(symbols),
+    fn.splitTextBy(' '),
+    fn.removeElementsIfEmpty(),
+    fn.removeElementsIfBeginWithNumber(),
+
 )
 .subscribe(console.log)
