@@ -52,10 +52,19 @@ function readFile(){
     }))
 }
 
-function readFiles(paths){
-    return Promise.all(paths.map(path => readFile(path)))
+function splitTextBy(symbol){
+    return createPipeableOperator(subscriber =>({
+        next(text){
+            try{
+                text.split(symbol).forEach(line => {
+                    subscriber.next(line)
+                })
+            }catch(e){
+                subscriber.error(e)
+            }
+        }
+    }))
 }
-
 
 function removeElementsIfEmpty(array){
     return array.filter(element => element.trim())
@@ -88,12 +97,6 @@ function joinElements (array){
     return array.join(' ')
 }
 
-function splitTextBy(symbol){
-    return function(text){
-        return text.split(symbol)
-    }
-}
-
 
 function groupWords(words){
     return Object.values(words.reduce((group, word) => {
@@ -118,7 +121,6 @@ module.exports = {
     readDir, 
     elementsEndWith,
     readFile, 
-    readFiles, 
     removeElementsIfEmpty,
     removeElementsIfInclude,
     removeElementsIfOnlyNumber,
