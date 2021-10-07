@@ -14,6 +14,7 @@ fn.readDir(pathFiles)
 .pipe(
     fn.elementsEndWith('.srt'),
     fn.readFile(),
-    fn.splitTextBy('\n')
+    fn.splitTextBy('\n'),
+    fn.removeElementsIfEmpty(),
 )
 .subscribe(console.log)

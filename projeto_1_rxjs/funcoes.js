@@ -66,8 +66,18 @@ function splitTextBy(symbol){
     }))
 }
 
-function removeElementsIfEmpty(array){
-    return array.filter(element => element.trim())
+function removeElementsIfEmpty(){
+    return createPipeableOperator(subscriber =>({
+        next(text){
+            try{
+                if(text.trim()){
+                    subscriber.next(text)
+                }
+            }catch(e){
+                subscriber.error(e)
+            }
+        }
+    }))
 }
 
 function removeElementsIfInclude(standardText){
