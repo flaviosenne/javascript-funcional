@@ -111,11 +111,6 @@ function removeSymbols(symbols){
     }))     
 }
 
-function joinElements (array){
-    return array.join(' ')
-}
-
-
 function groupElements(){
     return createPipeableOperator(subscriber =>({
         next(words){
@@ -138,6 +133,11 @@ function groupElements(){
         }
     }))  
 }
+
+function joinElements (array){
+    return array.join(' ')
+}
+
 
 function sortByAtributteNumber(atributte, order='asc'){
     return function(array){

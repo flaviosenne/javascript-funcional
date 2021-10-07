@@ -1,7 +1,8 @@
 const fn = require('./funcoes')
 const { join }= require('path')
 const fs = require('fs')
-const { toArray } = require('rxjs')
+const { toArray, map } = require('rxjs')
+const _ = require('lodash')
 
 const pathFiles = join(__dirname,'..', 'dados','legendas')
 
@@ -23,7 +24,8 @@ fn.readDir(pathFiles)
     fn.removeElementsIfEmpty(),
     fn.removeElementsIfBeginWithNumber(),
     toArray(),
-    fn.groupElements()
+    fn.groupElements(),
+    map(array => _.sortBy(array, el => -el.quantidade))
 
 )
 .subscribe(console.log)
