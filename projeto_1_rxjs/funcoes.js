@@ -17,7 +17,6 @@ function createPipeableOperator(operatorFn){
 
 function readDir(path){
     return new Observable(subscriber => {
-
         try{
             fs.readdirSync(path).forEach(file => {
                 subscriber.next(join(path, file))
@@ -40,15 +39,17 @@ function elementsEndWith(standardText){
     }))
 }
 
-function readFile(path){
-    return new Promise((resolve, reject) =>{
-        try{
-            resolve(fs.readFileSync(path, { encoding: 'utf-8'}).toString())
-        }catch(e){
-            reject(e)
+function readFile(){
+    return createPipeableOperator(subscriber =>({
+        next(path){
+            try{
+                const content = fs.readFileSync(path, { encoding: 'utf-8'})
+                subscriber.next(content.toString())
+            }catch(e){
+                subscriber.error(e)
+            }
         }
-
-    })
+    }))
 }
 
 function readFiles(paths){
