@@ -11,4 +11,7 @@ const symbols = [
 ]
 
 fn.readDir(pathFiles)
+.pipe(
+    fn.elementsEndWith('.srt')
+)
 .subscribe(console.log)

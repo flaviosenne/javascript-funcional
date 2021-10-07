@@ -2,6 +2,18 @@ const fs = require('fs')
 const { join }= require('path')
 const { Observable } = require('rxjs')
 
+function createPipeableOperator(operatorFn){
+    return function(source){
+        return Observable.create(subscribe => {
+            const sub = operatorFn(subscribe) 
+            source.subscribe({
+                next: sub.next,
+                error: sub.error || (e => subscribe.error(e)),
+                complete: sub.complete || (() => subscribe.complete())
+            })
+        })
+    }
+} 
 
 function readDir(path){
     return new Observable(subscriber => {
@@ -16,6 +28,16 @@ function readDir(path){
         }
 
     })
+}
+
+function elementsEndWith(standardText){
+    return createPipeableOperator(subscriber =>({
+        next(text){
+            if(text.endsWith(standardText)){
+                subscriber.next(text)
+            }
+        }
+    }))
 }
 
 function readFile(path){
@@ -33,11 +55,6 @@ function readFiles(paths){
     return Promise.all(paths.map(path => readFile(path)))
 }
 
-function elementsEndWith(standardText,){
-    return function(array){
-        return array.filter(element => element.endsWith(standardText))
-    }
-}
 
 function removeElementsIfEmpty(array){
     return array.filter(element => element.trim())
