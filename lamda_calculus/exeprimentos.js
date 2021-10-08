@@ -1,5 +1,5 @@
 Number.prototype.log = function() { console.log(+this)} 
-Function.prototype.log = function() { console.log(this)} 
+Function.prototype.log = function() { console.log(this.toString())} 
 
 let r = 3
 
@@ -46,8 +46,8 @@ r.log()
 const T = PRIMEIRO
 const F = ULTIMO
 
-T.inspect = () => 'Verdadeiro (PRIMEIRO)'
-F.inspect = () => 'False (ULTIMO)'
+T.toString = () => 'Verdadeiro (PRIMEIRO)'
+F.toString = () => 'False (ULTIMO)'
 
 T
 F
