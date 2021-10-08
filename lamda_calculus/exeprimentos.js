@@ -53,7 +53,7 @@ T
 F
 
 // NOT 
-
+console.log('--------- NOT-------------')
 const NOT = a => a(F)(T)
 
 r = NOT(T)
@@ -68,6 +68,7 @@ r.log()
 // false && true => false
 // false && false => false
 
+console.log('---------AND-------------')
 const AND = a => b => a(b)(F)
 
 r = AND(T)(T)
@@ -82,6 +83,8 @@ r.log()
 r = AND(F)(T)
 r.log()
 
+
+console.log('---------OR-------------')
 const OR = a => b => a(T)(b)
 
 r = OR(T)(F)
@@ -96,6 +99,8 @@ r.log()
 r = OR(F)(T)
 r.log()
 
+
+console.log('---------EQ-------------')
 const EQ = a => b => a(b)(NOT(b))
 
 r = EQ(T)(T)
@@ -110,6 +115,8 @@ r.log()
 r = EQ(F)(T)
 r.log()
 
+
+console.log('---------XOR-------------')
 const XOR = a => b => NOT(EQ(a)(b))
 
 r = XOR(T)(T)
